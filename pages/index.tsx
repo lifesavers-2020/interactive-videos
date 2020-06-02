@@ -1,7 +1,14 @@
 import React from "react";
+import Link from "next/link";
 
-export const index: React.FC = () => {
-  return <>Hi</>;
+export const IndexPage: React.FC = () => {
+  return (
+    <>
+      <Link href="/overlay-example">
+        <button>Overlay Example</button>
+      </Link>
+    </>
+  );
 };
 
-export default index;
+export default IndexPage;
