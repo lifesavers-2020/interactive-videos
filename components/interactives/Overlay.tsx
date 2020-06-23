@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Video } from "../core/Video";
+import { Timer } from "../core/Timer";
 
 const FAST_FORWARD_REWIND_DURATION = 5;
 
@@ -88,6 +89,7 @@ export const Overlay: React.FC<Props> = ({ src1, src2, width, height }) => {
             onContextMenu: onVideoContextMenu,
           }}
         />
+        <Timer />
       </div>
 
       <button onClick={() => onVideoSwitch(!isFirstVideoOnTop)}>Switch Video</button>
