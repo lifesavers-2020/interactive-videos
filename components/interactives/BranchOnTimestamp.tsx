@@ -38,6 +38,12 @@ export const BranchOnTimestamp: React.FC<Props> = ({ src, branches }) => {
     let videoState: VideoState = "playing-main-story";
     let choice: number | null = null;
 
+    video.oncontextmenu = (e) => {
+      e.preventDefault();
+      if (videoState === "pause-choosing") return;
+      video.paused ? video.play() : video.pause();
+    };
+
     const step = () => {
       if (branchIndex >= branches.length) return;
 
@@ -84,8 +90,10 @@ export const BranchOnTimestamp: React.FC<Props> = ({ src, branches }) => {
       <Video
         src={src}
         videoProps={{
+          playsInline: true,
           ref: videoRef,
           autoPlay: true,
+          muted: true,
         }}
       />
     ),
