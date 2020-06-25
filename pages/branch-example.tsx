@@ -14,10 +14,13 @@ const branches: Branch[] = [
   },
 ];
 
+const VIDEO_WIDTH = 1280;
+const VIDEO_HEIGHT = 720;
+
 const BranchExamplePage: React.FC = () => {
   return (
     <>
-      <BranchOnTimestamp src={src} branches={branches} />
+      <BranchOnTimestamp {...{ src, branches, width: VIDEO_WIDTH, height: VIDEO_HEIGHT }} />
     </>
   );
 };
