@@ -16,6 +16,8 @@ export interface Branch {
 interface Props {
   src: string;
   branches: Branch[];
+  width: number;
+  height: number;
 }
 
 interface ChoiceDetail {
@@ -25,7 +27,7 @@ interface ChoiceDetail {
 
 type VideoState = "playing-main-story" | "pause-choosing" | "playing-choice";
 
-export const BranchOnTimestamp: React.FC<Props> = ({ src, branches }) => {
+export const BranchOnTimestamp: React.FC<Props> = ({ src, branches, width, height }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [choiceOnClicks, setChoiceOnClicks] = useState<ChoiceDetail[]>([]);
 
@@ -89,6 +91,8 @@ export const BranchOnTimestamp: React.FC<Props> = ({ src, branches }) => {
     () => (
       <Video
         src={src}
+        height={height}
+        width={width}
         videoProps={{
           playsInline: true,
           ref: videoRef,
