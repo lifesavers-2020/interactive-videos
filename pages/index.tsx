@@ -7,6 +7,12 @@ export const IndexPage: React.FC = () => {
       <Link href="/overlay-example">
         <button>Overlay Example</button>
       </Link>
+      <Link href="/branch-example">
+        <button>Branch Example</button>
+      </Link>
+      <Link href="/lifesavers-testing">
+        <button>Lifesavers Testing</button>
+      </Link>
     </>
   );
 };
