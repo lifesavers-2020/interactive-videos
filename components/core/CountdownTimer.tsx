@@ -4,6 +4,7 @@ interface Props {
   countDownFinishHandler: any;
   width: number;
   height: number;
+  showTimer: boolean;
 }
 
 
@@ -61,48 +62,50 @@ export class CountdownTimer extends React.Component<Props, State> {
   };
 
   render() {
-    const { progressWidth } = this.state;
-    return (
-      <div>
-        <h2
-          style={{
-            position: "absolute",
-            zIndex: 2,
-            marginTop: 0.7 * this.props.height,
-            marginLeft: 0.67 * this.props.width,
-            color: "red",
-          }}
-        >
-          {this.state.counter}{" "}
-        </h2>
-        <div id="progressBar"
-          style={{
-            height: 30,
-            // TODO: width: { progressWidth },
-            zIndex: 3,
-            marginTop: 0.8 * this.props.height,
-            backgroundColor: "red",
-          }}
-        />
-        {/*<div*/}
-        {/*  style={{*/}
-        {/*    width: 50,*/}
-        {/*    height: 50,*/}
-        {/*    backgroundColor: "transparent",*/}
-        {/*    position: "absolute",*/}
-        {/*    zIndex: 3,*/}
-        {/*    borderRadius: this.state.width * 0.67 * 0.5,*/}
-        {/*    border: "20px solid",*/}
-        {/*    marginLeft: 0.6485 * this.state.width,*/}
-        {/*    marginTop: 0.668 * this.state.height,*/}
-        {/*    borderLeftColor: "transparent",*/}
-        {/*    borderBottomColor: "transparent",*/}
-        {/*    borderRightColor: "red",*/}
-        {/*    borderTopColor: "red",*/}
-        {/*    transform: [rotateZ("45deg")],*/}
-        {/*  }}*/}
-        {/*/>*/}
-        {/* <div
+    if (this.props.showTimer) {
+      const { progressWidth } = this.state;
+      return (
+        <div>
+          <h2
+            style={{
+              position: "absolute",
+              zIndex: 3,
+              marginTop: 0.7 * this.props.height,
+              marginLeft: 0.67 * this.props.width,
+              color: "red",
+            }}
+          >
+            {this.state.counter}{" "}
+          </h2>
+          <div id="progressBar"
+               style={{
+                 height: 30,
+                 width: progressWidth,
+                 zIndex: 3,
+                 marginTop: 0.8 * this.props.height,
+                 backgroundColor: "red",
+                 position: "absolute"
+               }}
+          />
+          {/*<div*/}
+          {/*  style={{*/}
+          {/*    width: 50,*/}
+          {/*    height: 50,*/}
+          {/*    backgroundColor: "transparent",*/}
+          {/*    position: "absolute",*/}
+          {/*    zIndex: 3,*/}
+          {/*    borderRadius: this.state.width * 0.67 * 0.5,*/}
+          {/*    border: "20px solid",*/}
+          {/*    marginLeft: 0.6485 * this.state.width,*/}
+          {/*    marginTop: 0.668 * this.state.height,*/}
+          {/*    borderLeftColor: "transparent",*/}
+          {/*    borderBottomColor: "transparent",*/}
+          {/*    borderRightColor: "red",*/}
+          {/*    borderTopColor: "red",*/}
+          {/*    transform: [rotateZ("45deg")],*/}
+          {/*  }}*/}
+          {/*/>*/}
+          {/* <div
           style={{
             width: 50,
             height: 50,
@@ -117,7 +120,10 @@ export class CountdownTimer extends React.Component<Props, State> {
           }}
         /> */}
 
-      </div>
-    );
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }

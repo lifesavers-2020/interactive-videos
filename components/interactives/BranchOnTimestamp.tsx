@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, RefObject } from "react";
+import React, { useState, useEffect, useRef, useMemo} from "react";
 import { Video } from "../core/Video";
 import { CountdownTimer } from "../core/CountdownTimer";
 
@@ -31,17 +31,20 @@ type VideoState = "playing-main-story" | "pause-choosing" | "playing-choice";
 export const BranchOnTimestamp: React.FC<Props> = ({ src, branches, width, height }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   let timerRef: CountdownTimer | null;
+
   const [choiceOnClicks, setChoiceOnClicks] = useState<ChoiceDetail[]>([]);
   const [showTimer, setShowTimer] = useState(false);
 
-  useEffect(() => {
-    if (!videoRef.current) return;
+  let videoState: VideoState = "playing-main-story";
+  const video = videoRef.current;
+  let branch: Branch;
+  let choice: number | null = null;
+  let branchIndex = 0;
 
-    const video = videoRef.current;
+  useEffect(() => {
+    if (!videoRef.current || !video) return;
+
     let animationHandle: number;
-    let branchIndex = 0;
-    let videoState: VideoState = "playing-main-story";
-    let choice: number | null = null;
 
     video.oncontextmenu = (e) => {
       e.preventDefault();
@@ -49,28 +52,17 @@ export const BranchOnTimestamp: React.FC<Props> = ({ src, branches, width, heigh
       video.paused ? video.play() : video.pause();
     };
 
-    const countDownFinishHandler = () => {
-    //   TODO: if (videoState === "playing-choice") {
-    //     video.currentTime = branch.end;
-    //     videoState = "playing-main-story";
-    //     choice = null;
-    //     branchIndex++;
-    //   }
-    }
-
-
     const step = () => {
       if (branchIndex >= branches.length) return;
 
       const timestamp = video.currentTime;
-      const branch = branches[branchIndex];
+      branch = branches[branchIndex];
 
       // Encounter a branch, pause the video and let user to choose
       if (videoState === "playing-main-story" && timestamp >= branch.start) {
         video.pause();
         setShowTimer(true);
         videoState = "pause-choosing";
-        timerRef.
         setChoiceOnClicks(
           branch.choices.map(({ name }, i) => ({
             name,
@@ -121,6 +113,16 @@ export const BranchOnTimestamp: React.FC<Props> = ({ src, branches, width, heigh
     [src]
   );
 
+  let countDownFinishHandler = ():void => {
+    if (!video) return;
+    if (videoState === "pause-choosing") {
+        video.currentTime = branch.end;
+        videoState = "playing-main-story";
+        choice = null;
+        branchIndex++;
+      }
+  }
+
   return (
     <>
       {VideoMemo}
@@ -131,8 +133,12 @@ export const BranchOnTimestamp: React.FC<Props> = ({ src, branches, width, heigh
           </button>
         ))}
       </div>
-      { // TODO fix error below }
-      {showTimer ? <CountdownTimer ref = {ref => timerRef = ref} countDownFinishHandler = {this.countDownFinishHandler} width={this.props.width} height = {this.props.height}/> : null}
+      <CountdownTimer
+        ref = {ref => timerRef = ref}
+        countDownFinishHandler = {countDownFinishHandler}
+        width={width}
+        height = {height}
+        showTimer={showTimer} />
     </>
   );
 };
