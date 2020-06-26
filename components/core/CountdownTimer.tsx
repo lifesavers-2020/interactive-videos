@@ -29,6 +29,7 @@ export class CountdownTimer extends React.Component<Props, State> {
   componentDidUpdate(_prevProps: Props, _prevState: State) {
     if (this.state.counter === 0) {
       this.resetCounter();
+      this.props.countDownFinishHandler();
     } else {
       if (_prevState.counter !== this.state.counter) {
         this.setState({
@@ -40,7 +41,9 @@ export class CountdownTimer extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.timerID = setInterval(this.tick, 200);
+    if (this.props.showTimer) {
+      this.timerID = setInterval(this.tick, 200);
+    }
   }
 
   componentWillUnmount() {
@@ -54,11 +57,10 @@ export class CountdownTimer extends React.Component<Props, State> {
   };
 
   resetCounter = () => {
-    this.timerID = null;
+    clearInterval(this.timerID);
     this.setState({
       counter: CountdownTimer.COUNTDOWN,
     });
-    this.props.countDownFinishHandler();
   };
 
   render() {
